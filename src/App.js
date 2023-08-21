@@ -1,87 +1,103 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
-
-// Creating items
+// Creating items                                                    ******TypeScript********
 class App extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       newItem: "",
-      list = []
+      list: [],
+    };
+  }
+
+  addItem(todoValue) {
+    if (todoValue !== "") {
+      const newItem = {
+        id: Date.now(),
+        value: todoValue,
+        isDone: false,
+      };
+
+      const list = [...this.state.list];
+      list.push(newItem);
+
+      this.setState({
+        list,
+        newItem: "",
+      });
     }
   }
 
-  addItem(todoValue){
-
-  if (todoValue !== "") {
-    const newItem = {
-      id: Date.now(),
-      value: todoValue,
-      isDone:false,
-    };
-
+  // Deleting Item:
+  deleteItem(id) {
     const list = [...this.state.list];
-    list.push(newItem);
-
-    this.seetState({
-      list,
-      newItem: ""
-    });
-  }  
+    const updatedlist = list.filter((item) => item.id !== id);
+    this.setState({ list: updatedlist });
   }
 
-// Deleting Item: 
-  deleteItem(id){
-    const list = [...this.state.list];
-    const updatedlist = list.filter(item => item.id !== id);
-    this.setState({list: updatedlist});
-  }
- 
-  updateInput(input){
-    this.setState({newItem:input});
+  updateInput(input) {
+    this.setState({ newItem: input });
   }
 
-  // HTML
+  // Asynchronous Javascript and XML (AJAX)
 
-  render(){
+  render() {
     return (
       <div>
-        <img src ={logo} width="100" height="100" className='logo' />
+        <img src={logo} width="150" height="150" className="logo" />
 
         <h1 className="app-title">To DO App </h1>
+
+        {/* Adding item */}
         <div className="container">
           Add an Item....
           <br />
-
-          <input type='text' 
-          className="input-text" 
-          placeholder='Write a Todo'
-          required
-          value={this.state.newItem} 
-          onChange={e => this.updateInput(e.target.value)}
+          <input
+            type="text"
+            className="input-text"
+            placeholder="Write a Todo"
+            required
+            value={this.state.newItem}
+            onChange={(e) => this.updateInput(e.target.value)}
           />
-
-
-          <button className="add-btn">Add Todo</button>
-
-          <div className='List'>
+          <button
+            className="add-btn"
+            onClick={() => this.addItem(this.state.newItem)}
+            disabled={!this.state.newItem.length}
+          >
+            Add Todo
+          </button>
+          <div className="List">
             <ul>
-              <li>
-                <input type="checkbox" name='' id=''/>
-                Record youtube Videos
-                <button className='btn' > Delete</button>
-              </li>
+              {this.state.list.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <input
+                      type="checkbox"
+                      name="idDone"
+                      checked={item.isDone}
+                      onChange={() => {}}
+                    />
+                    {item.value}
+
+                    {/* deleting item */}
+                    <button
+                      className="btn"
+                      onClick={() => this.deleteItem(item.id)}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </div>
-
         </div>
       </div>
-    )
+    );
   }
-
 }
 
 export default App;
