@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+
+// Creating items
 class App extends React.Component {
 
   constructor(props) {
@@ -13,12 +15,14 @@ class App extends React.Component {
   }
 
   addItem(todoValue){
+
   if (todoValue !== "") {
     const newItem = {
       id: Date.now(),
       value: todoValue,
       isDone:false,
     };
+
     const list = [...this.state.list];
     list.push(newItem);
 
@@ -29,15 +33,18 @@ class App extends React.Component {
   }  
   }
 
+// Deleting Item: 
   deleteItem(id){
     const list = [...this.state.list];
     const updatedlist = list.filter(item => item.id !== id);
-    this.setState({list: updatedlist})
+    this.setState({list: updatedlist});
   }
  
   updateInput(input){
-    this.setState({newItem:input})
+    this.setState({newItem:input});
   }
+
+  // HTML
 
   render(){
     return (
@@ -48,7 +55,16 @@ class App extends React.Component {
         <div className="container">
           Add an Item....
           <br />
-          <input type='text' className="input-text" placeholder='Write a Todo' />
+
+          <input type='text' 
+          className="input-text" 
+          placeholder='Write a Todo'
+          required
+          value={this.state.newItem} 
+          onChange={e => this.updateInput(e.target.value)}
+          />
+
+
           <button className="add-btn">Add Todo</button>
 
           <div className='List'>
